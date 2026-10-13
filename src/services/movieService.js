@@ -1,16 +1,9 @@
 
-const API_BASE_URL = 'https://api.themoviedb.org/3';
-const API_TOKEN = import.meta.env.VITE_TMDB_TOKEN;
+const API_BASE_URL = '/api/movies';
 
 const fetchMovies = async (endpoint) => {
   const response = await fetch(
-    `${API_BASE_URL}${endpoint}`,
-    {
-      headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
-        accept: 'application/json',
-      },
-    }
+    `${API_BASE_URL}?path=${encodeURIComponent(endpoint)}`
   );
 
   if (!response.ok) {
@@ -27,7 +20,7 @@ const fetchMovies = async (endpoint) => {
 
 export const getPopularMovies = async (page = 1) => {
   return fetchMovies(
-    `/movie/popular?language=en-US&page=${page}`
+    `/movie/popular?page=${page}&language=en-US`
   );
 };
 
@@ -45,19 +38,13 @@ export const getMoviesByGenre = async (genreId, page = 1) => {
 
 export const getTrendingMovies = async (page = 1) => {
   return fetchMovies(
-    `/trending/movie/week?language=en-US&page=${page}`
+    `/trending/movie/week?page=${page}&language=en-US`
   );
 };
 
 export const getMovieVideos = async (movieId) => {
   const response = await fetch(
-    `${API_BASE_URL}/movie/${movieId}/videos?language=en-US`,
-    {
-      headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
-        accept: 'application/json',
-      },
-    }
+    `${API_BASE_URL}?path=${encodeURIComponent(`/movie/${movieId}/videos?language=en-US`)}`
   );
 
   if (!response.ok) {
